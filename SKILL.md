@@ -1,16 +1,15 @@
 ---
-name: hahadong-push-github
-description: 把本地目录一键推送到 GitHub 仓库（公共/私有），自动取本机凭据、不使用代理、密钥不入库。
+name: hahadong-push
+description: |
+  把本地目录一键推送到 GitHub 仓库（公共/私有）。
+  自动取本机凭据、不使用代理、密钥不入库，绕过沙箱 git 网络限制。
+agent_created: true
 version: 1.0.0
-author: hahadong
-trigger:
-  - "推到 github"
-  - "把这个目录上传 github"
-  - "新建 github 仓库并推送"
-  - "发布 skill 到 github"
-  - "把 xxx 推上 github"
-  - "推到我的 github"
-  - "用哈哈栋推github"
+display_name: "哈哈栋推 GitHub"
+display_name_en: "Hahadong Push GitHub"
+description_zh: "把本地目录一键推送到 GitHub（公共/私有），自动取本机凭据、不使用代理、密钥不入库。"
+description_en: "One-click push any local directory to GitHub (public/private) using local credentials, no proxy, no secrets in repo."
+visibility: "public"
 ---
 
 # 哈哈栋推 GitHub
@@ -41,7 +40,7 @@ trigger:
 - **.env / 密钥绝不入库**：`.gitignore` 强制排除 `.env`, `*.env`, `*.key`, `*.pem`, `credentials.json`, `secrets/`；上传前脚本还会对文件名二次过滤。
 - 仓库 owner 从 token 的 `/user` 接口动态获取，**不硬编码**用户名。
 - 若 `create_repository` 返回 422（仓库已存在）可忽略，直接上传文件；若文件已存在返回 422，脚本自动带 sha 更新。
-- **skillhub 发布约束**：若目标仓库要发布到 skillhub 作为 skill 安装，**仓库根不能含 `.gitignore`**（skillhub 拉取打包会因此失败）。脚本在自动生成 `.gitignore` 时会打印警告，此时若目的是发 skill，请删掉它再重新推送。
+- **skillhub 发布约束**：skillhub 从 GitHub 导入时按 SKILL.md frontmatter 解析，**必须用 skillhub 标准清单字段**（`name` / `description` / `agent_created: true` / `version` / `display_name` / `display_name_en` / `description_zh` / `description_en` / `visibility: "public"`）。自创字段（如 `author` / `trigger`）skillhub 不识别 → 报 "Failed to fetch"。`.gitignore` 不影响发布（feynman-tutor-skill 根目录带 `.gitignore` 照样成功）。脚本若有 `.gitignore` 警告，仅为避免密钥入库，与 skillhub 无关。
 - **用户无需提供任何凭据**：GitHub token 由脚本从本机已登录的 GCM 凭据自动取得，不要向用户索要账号/密码/token。
 
 ## 排错

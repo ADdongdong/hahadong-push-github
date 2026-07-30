@@ -42,6 +42,7 @@ __pycache__/
 *.cache.json
 EOF
 echo "写入 .gitignore"
+echo "[警告] 若此目录要作为 skill 发布到 skillhub，仓库根带 .gitignore 会导致发布失败，请删除本 .gitignore 后再推。"
 else
   for pat in '.env' '*.env' '*.key' '*.pem' 'credentials.json' 'secrets/'; do
     grep -qxF "$pat" .gitignore || echo "$pat" >> .gitignore

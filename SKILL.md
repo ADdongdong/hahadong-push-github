@@ -14,7 +14,10 @@ description: 把本地目录初始化为 git 仓库并推送到 GitHub（公共/
 - WorkBuddy 中调用脚本时 **Bash 必须 `dangerouslyDisableSandbox: true`**（放开沙箱网络），且 **不使用代理**
 
 ## 工作流
-1. 确认目标目录 `$DIR`（默认当前目录）与仓库名（默认 = 目录名）。可让用户指定可见性（默认 public）。
+1. **【强制】调用前必须用 AskUserQuestion 向用户确认三项参数，缺任一不得直接跑脚本**（尤其目录默认 `.` 不可靠，静默推错风险高）：
+   - ① 目标目录路径（必填，向用户确认）
+   - ② 仓库名（默认 = 目录名，可改）
+   - ③ 可见性 public / private（默认 public）
 2. 调用脚本：
    ```
    bash <skill_dir>/scripts/push_to_github.sh "$DIR" [repo_name] [public|private]
@@ -28,6 +31,8 @@ description: 把本地目录初始化为 git 仓库并推送到 GitHub（公共/
 - **.env / 密钥绝不入库**：`.gitignore` 强制排除 `.env`, `*.env`, `*.key`, `*.pem`, `credentials.json`, `secrets/`；上传前脚本还会对文件名二次过滤。
 - 仓库 owner 从 token 的 `/user` 接口动态获取，**不硬编码**用户名。
 - 若 `create_repository` 返回 422（仓库已存在）可忽略，直接上传文件；若文件已存在返回 422，脚本自动带 sha 更新。
+- **skillhub 发布约束**：若目标仓库要发布到 skillhub 作为 skill 安装，**仓库根不能含 `.gitignore`**（skillhub 拉取打包会因此失败）。脚本在自动生成 `.gitignore` 时会打印警告，此时若目的是发 skill，请删掉它再重新推送。
+- **用户无需提供任何凭据**：GitHub token 由脚本从本机已登录的 GCM 凭据自动取得，不要向用户索要账号/密码/token。
 
 ## 排错
 - `取不到 token`：GCM 在无 TTY 环境弹窗被拦截。需在用户本机终端运行（或确认已登录 GitHub）。

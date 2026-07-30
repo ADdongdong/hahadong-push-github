@@ -1,6 +1,16 @@
 ---
 name: hahadong-push-github
-description: 把本地目录初始化为 git 仓库并推送到 GitHub（公共/私有）。针对 WorkBuddy 沙箱环境：绕过 git HTTPS 传输被网络层拦截的限制，使用本机 GCM 个人 token + GitHub Contents API 直连推送。不使用代理、密钥（.env 等）绝不入库。当用户说"推到 github"、"把这个目录上传 github"、"新建 github 仓库并推送"、"发布 skill 到 github"、"把 xxx 推上 github"、"推到我的 github"时触发。
+description: 把本地目录一键推送到 GitHub 仓库（公共/私有），自动取本机凭据、不使用代理、密钥不入库。
+version: 1.0.0
+author: hahadong
+trigger:
+  - "推到 github"
+  - "把这个目录上传 github"
+  - "新建 github 仓库并推送"
+  - "发布 skill 到 github"
+  - "把 xxx 推上 github"
+  - "推到我的 github"
+  - "用哈哈栋推github"
 ---
 
 # 哈哈栋推 GitHub
